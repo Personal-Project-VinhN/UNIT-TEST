@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         stopOnFailure="false"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    
+    <source>
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <exclude>
+            <directory>./app/Http/Middleware</directory>
+            <directory>./app/Providers</directory>
+        </exclude>
+    </source>
+    
+    <!-- LOGGING & REPORTS -->
+    <logging>
+        <!-- JUnit XML - For CI/CD (Jenkins, GitLab CI, GitHub Actions) -->
+        <junit outputFile="tests/results/junit.xml"/>
+        
+        <!-- TestDox HTML - Human readable format -->
+        <testdoxHtml outputFile="tests/results/testdox.html"/>
+    </logging>
+    
+    <!-- CODE COVERAGE CONFIGURATION -->
+    <coverage>
+        <report>
+            <!-- HTML Coverage Report -->
+            <html outputDirectory="tests/results/coverage"/>
+            
+            <!-- Text Coverage Report -->
+            <text outputFile="tests/results/coverage.txt"/>
+            
+            <!-- Clover XML - For CI/CD tools -->
+            <clover outputFile="tests/results/clover.xml"/>
+        </report>
+    </coverage>
+    
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:testkey123456789012345678901234567890123456789012345678901234="/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="LOG_CHANNEL" value="array"/>
+    </php>
+</phpunit>

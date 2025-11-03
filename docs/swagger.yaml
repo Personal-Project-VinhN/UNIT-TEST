@@ -1,0 +1,729 @@
+openapi: 3.0.3
+info:
+  title: Accounting System API
+  description: API documentation for Accounting System - Revenue and Expense Management for IT Company
+  version: 1.0.0
+  contact:
+    name: Gin
+    email: gin_vn@haldata.net
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local development server
+  - url: https://api.example.com/api/v1
+    description: Production server
+
+tags:
+  - name: Accounts
+    description: Account management operations
+  - name: Categories
+    description: Category management operations
+  - name: Transactions
+    description: Transaction (Revenue/Expense) operations
+  - name: Reports
+    description: Financial reports and analytics
+
+paths:
+  # Accounts
+  /accounts:
+    get:
+      tags:
+        - Accounts
+      summary: Get all accounts
+      description: Retrieve a list of all financial accounts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    post:
+      tags:
+        - Accounts
+      summary: Create new account
+      description: Create a new financial account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountInput'
+      responses:
+        '201':
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Validation error
+
+  /accounts/{id}:
+    get:
+      tags:
+        - Accounts
+      summary: Get account by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    put:
+      tags:
+        - Accounts
+      summary: Update account
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountInput'
+      responses:
+        '200':
+          description: Account updated successfully
+    delete:
+      tags:
+        - Accounts
+      summary: Delete account
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Account deleted successfully
+
+  /accounts/total-balance:
+    get:
+      tags:
+        - Accounts
+      summary: Get total balance of all accounts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_balance:
+                    type: number
+                    format: decimal
+
+  # Categories
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all categories
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - Categories
+      summary: Create new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+  /categories/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Get category by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+    put:
+      tags:
+        - Categories
+      summary: Update category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        '200':
+          description: Category updated successfully
+    delete:
+      tags:
+        - Categories
+      summary: Delete category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Category deleted successfully
+
+  /categories/type:
+    get:
+      tags:
+        - Categories
+      summary: Get categories by type
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [revenue, expense]
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  # Transactions
+  /transactions:
+    get:
+      tags:
+        - Transactions
+      summary: Get all transactions
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+    post:
+      tags:
+        - Transactions
+      summary: Create new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionInput'
+      responses:
+        '201':
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Validation error
+
+  /transactions/{id}:
+    get:
+      tags:
+        - Transactions
+      summary: Get transaction by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+    put:
+      tags:
+        - Transactions
+      summary: Update transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionInput'
+      responses:
+        '200':
+          description: Transaction updated successfully
+    delete:
+      tags:
+        - Transactions
+      summary: Delete transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transaction deleted successfully
+
+  /transactions/revenue/total:
+    get:
+      tags:
+        - Transactions
+      summary: Get total revenue for date range
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_revenue:
+                    type: number
+                    format: decimal
+
+  /transactions/expense/total:
+    get:
+      tags:
+        - Transactions
+      summary: Get total expense for date range
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_expense:
+                    type: number
+                    format: decimal
+
+  /transactions/profit:
+    get:
+      tags:
+        - Transactions
+      summary: Get profit (revenue - expense) for date range
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  profit:
+                    type: number
+                    format: decimal
+
+  # Reports
+  /reports/daily:
+    get:
+      tags:
+        - Reports
+      summary: Get daily report
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+  /reports/monthly:
+    get:
+      tags:
+        - Reports
+      summary: Get monthly report
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+  /reports/yearly:
+    get:
+      tags:
+        - Reports
+      summary: Get yearly report
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+  /reports/date-range:
+    get:
+      tags:
+        - Reports
+      summary: Get report by date range
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "Vietcombank Main"
+        account_type:
+          type: string
+          enum: [bank, cash, credit_card]
+        account_number:
+          type: string
+          nullable: true
+        bank_name:
+          type: string
+          nullable: true
+        balance:
+          type: number
+          format: decimal
+          example: 100000000
+        currency:
+          type: string
+          example: "VND"
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    AccountInput:
+      type: object
+      required:
+        - name
+        - account_type
+      properties:
+        name:
+          type: string
+          example: "Vietcombank Main"
+        account_type:
+          type: string
+          enum: [bank, cash, credit_card]
+        account_number:
+          type: string
+          nullable: true
+        bank_name:
+          type: string
+          nullable: true
+        balance:
+          type: number
+          format: decimal
+          minimum: 0
+        currency:
+          type: string
+          default: "VND"
+        is_active:
+          type: boolean
+          default: true
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "Software Development"
+        type:
+          type: string
+          enum: [revenue, expense]
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CategoryInput:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: "Software Development"
+        type:
+          type: string
+          enum: [revenue, expense]
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+          default: true
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        account_id:
+          type: integer
+        category_id:
+          type: integer
+        type:
+          type: string
+          enum: [revenue, expense]
+        amount:
+          type: number
+          format: decimal
+          example: 50000000
+        description:
+          type: string
+          nullable: true
+        transaction_date:
+          type: string
+          format: date
+        reference_number:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TransactionInput:
+      type: object
+      required:
+        - account_id
+        - category_id
+        - type
+        - amount
+        - transaction_date
+      properties:
+        account_id:
+          type: integer
+          example: 1
+        category_id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          enum: [revenue, expense]
+        amount:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 50000000
+        description:
+          type: string
+          nullable: true
+        transaction_date:
+          type: string
+          format: date
+          example: "2024-01-15"
+        reference_number:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+
+    Report:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_revenue:
+          type: number
+          format: decimal
+        total_expense:
+          type: number
+          format: decimal
+        profit:
+          type: number
+          format: decimal
+        transaction_count:
+          type: integer
+        revenue_by_category:
+          type: object
+          additionalProperties:
+            type: number
+        expense_by_category:
+          type: object
+          additionalProperties:
+            type: number
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+              errors:
+                type: object
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Resource not found"
