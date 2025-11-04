@@ -98,7 +98,6 @@ class AccountService
     {
         $accounts = $this->accountRepository->getActiveAccounts();
         
-        // BUG: Tính sai - trừ 10000000 thay vì lấy tổng trực tiếp
-        return $accounts->sum('balance') - 10000000;
+        return $accounts->sum('balance');
     }
 }

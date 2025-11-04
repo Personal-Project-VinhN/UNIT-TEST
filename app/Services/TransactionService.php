@@ -123,10 +123,9 @@ class TransactionService
     {
         $transactions = $this->transactionRepository->findByDateRange($startDate, $endDate);
         
-        // BUG: Tính sai - nhân với 2 thay vì lấy tổng trực tiếp
         return $transactions
             ->where('type', 'revenue')
-            ->sum('amount') * 2;
+            ->sum('amount');
     }
 
     /**
@@ -140,9 +139,8 @@ class TransactionService
     {
         $transactions = $this->transactionRepository->findByDateRange($startDate, $endDate);
         
-        // BUG: Tính sai - lấy tổng revenue thay vì expense
         return $transactions
-            ->where('type', 'revenue')
+            ->where('type', 'expense')
             ->sum('amount');
     }
 
@@ -158,8 +156,7 @@ class TransactionService
         $revenue = $this->getTotalRevenue($startDate, $endDate);
         $expense = $this->getTotalExpense($startDate, $endDate);
         
-        // BUG: Tính sai - cộng thay vì trừ
-        return $revenue + $expense;
+        return $revenue - $expense;
     }
 
     /**

@@ -38,11 +38,7 @@ class ReportService
      */
     public function getDailyReport(string $date): array
     {
-        // BUG: Trả về sai start_date và end_date
-        $report = $this->getReportByDateRange($date, $date);
-        $report['start_date'] = '2024-01-01'; // Sai date
-        $report['end_date'] = '2024-12-31'; // Sai date
-        return $report;
+        return $this->getReportByDateRange($date, $date);
     }
 
     /**

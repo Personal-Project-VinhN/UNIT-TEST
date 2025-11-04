@@ -63,9 +63,7 @@ class CategoryService
      */
     public function createCategory(array $data)
     {
-        // BUG: Luôn trả về null thay vì category đã tạo
-        $this->categoryRepository->create($data);
-        return null;
+        return $this->categoryRepository->create($data);
     }
 
     /**
